@@ -56,8 +56,6 @@ docs/_build/
 # PyBuilder
 target/
 
-# DotEnv configuration
-.env
 
 # Database
 *.db
@@ -75,8 +73,7 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
-# exclude data from source control by default
-/data/
+
 
 # Mac OS-specific storage files
 .DS_Store
@@ -87,3 +84,10 @@ target/
 
 # Mypy cache
 .mypy_cache/
+
+
+# exclude data from source control by default
+# /data/
+
+# DotEnv configuration
+# .env
