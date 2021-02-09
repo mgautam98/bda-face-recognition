@@ -27,6 +27,15 @@ def convert_to_jpg(path, output_path):
     save_path = os.path.join(output_path, file_name)
     im.save(save_path)
 
+def convert_to_gray(path, output_path):
+  files = os.listdir(path)
+  for file in tqdm(files, desc="Converting: "):
+    im = Image.open(os.path.join(path, file))
+    im = im.convert('LA').convert('RGB')
+    file_name = file.split('.')[0] + '.jpg'
+    save_path = os.path.join(output_path, file_name)
+    im.save(save_path)
+
 convert_to_jpg(test_path, test_output)
 
 convert_to_jpg(train_path, train_output)
