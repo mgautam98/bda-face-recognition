@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import tqdm
 
 def random_search(n,dims):
     """
@@ -15,42 +16,45 @@ def random_search(n,dims):
         r = np.random.randint(1,dims)
         for _r in range(r):
             gen[_r] = 1
-        random.shuffle(gen)
+        np.random.shuffle(gen)
     return gens
+
+def MyCost(x):
+  return np.sum(x)
 
 def BDA(N, max_iter, nVar, CostFunction):
   dim = nVar
   
   food_fit = float("-inf")
-  food_pos = np.zeros((1,dim))
+  food_pos = np.zeros((dim,1))
 
   enemy_fit = float("-inf")
-  enemy_pos = np.zeros((1,dim))
+  enemy_pos = np.zeros((dim,1))
   
-  fit = np.zeros((1,N))
   X = random_search(N,dim)
   DeltaX = random_search(N,dim)
 
+  fit = np.zeros(N)
 
-  for iter in range(max_iter):
+  for iter in tqdm(range(max_iter), desc="Training..."):
     w = 0.9 - iter * ((0.9-0.4) / max_iter)
-    mc = 0.1- iter * ((0.1-0) / (max_iter/2))
+    m_c = 0.1- iter * ((0.1-0) / (max_iter/2))
 
-    if mc < 0:
-      mc=0
+    if m_c < 0:
+      m_c=0
 
-    s = 2 * np.random.randn() * mc
-    a = 2 * np.random.randn() * mc
-    c = 2 * np.random.randn() * mc
+    s = 2 * np.random.randn() * m_c
+    a = 2 * np.random.randn() * m_c
+    c = 2 * np.random.randn() * m_c
     f = 2 * np.random.randn()
-    e = mc
+    e = m_c
 
     if iter > (3 * max_iter / 3):
       e = 0
     
     for i in range(N):
       fit[i] = CostFunction(X[i])
-
+      
       if fit[i] < food_fit:
         food_fit = fit[i]
         food_pos = X[i]
@@ -75,40 +79,42 @@ def BDA(N, max_iter, nVar, CostFunction):
       
       # Separation=====================================================================================
       # Eq. (3.1)
-      S=np.zeros((dim,1))
+      S=np.zeros(dim)
       for k in range(neighbours_no):
         S = S + (Neighbours_X[k] - X[i])
       S = -S
 
       # Separation===================================================================================== 
       # Eq. (3.2)
-      A = [sum([_[_d] for _ in Neighbours_DeltaX])/neighbours_no for _d in range(dim)] #np.sum(Neighbours_DeltaX)/neighbours_no
+      A = np.array([sum([_[_d] for _ in Neighbours_DeltaX])/neighbours_no for _d in range(dim)]) #np.sum(Neighbours_DeltaX)/neighbours_no
 
       # Separation===================================================================================== 
       # Eq. (3.3)
-      C = [_-g for _,g in zip([sum([_[_d] for _ in Neighbours_DeltaX])/neighbours_no for _d in range(dim)],X[i])]
+      C = np.array([_-g for _,g in zip([sum([_[_d] for _ in Neighbours_DeltaX])/neighbours_no for _d in range(dim)],X[i])])
 
 
       # Separation===================================================================================== 
       # Eq. (3.4)
-      F = [fp-g for fp,g in zip(food_pos,X[i])]
+      F = np.array([fp-g for fp,g in zip(food_pos,X[i])])
 
       # Separation===================================================================================== 
       # Eq. (3.5)
-      E = [ep+g for  ep,g in zip(enemy_pos,X[i])]
+      E = np.array([ep+g for  ep,g in zip(enemy_pos,X[i])])
 
+      # print("Sizes", S.shape, A.shape, C.shape, F.shape, F.shape, DeltaX.shape)
       for j in range(dim):
         # Eq. (3.6)
-        DeltaX[i][j] = s*S[j] + a*A[j] + c*C[j] + f*F[j] + e*E[j] + w*DeltaX[i][j]
 
-        if DeltaX[i][j] > 6:
-          DeltaX[i][j] = 6
-        if DeltaX[i][j] < -6:
-          DeltaX[i][j] = -6
+        DeltaX[i,j] = s*S[j] + a*A[j] + c*C[j] + f*F[j] + e*E[j] + w*DeltaX[i,j]
 
-        T = abs(DeltaX[i][j] / math.sqrt((1+DeltaX[i][j]**2)))
+        if DeltaX[i,j] > 6:
+          DeltaX[i,j] = 6
+        if DeltaX[i,j] < -6:
+          DeltaX[i,j] = -6
+
+        T = abs(DeltaX[i,j] / np.sqrt((1+DeltaX[i,j]**2)))
         if np.random.randn() < T:
-          X[i][j]=1 if X[i][j] == 0 else 0
+          X[i,j]=1 if X[i,j] == 0 else 0
         
   # Convergence_curve(iter)=food_fit
   Best_pos=food_pos
@@ -116,8 +122,6 @@ def BDA(N, max_iter, nVar, CostFunction):
   best_dict={'Best_pos':Best_pos , 'Best_score':Best_score}
   return best_dict
 
-def MyCost(x):
-  return np.sum(x)
 
 if __name__ == "__main__":
   Max_iteration = 500
