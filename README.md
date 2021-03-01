@@ -1,7 +1,7 @@
-bio-inspired-face-recognition
+Binary Dragonfly Face Recognition with occlusion 
 ==============================
 
-Face recognition with occlusion using bio-inspired algorithm
+Face recognition with occlusion using Binary Dragonfly algorithm
 
 ## Flowchart
 <p align="center">
