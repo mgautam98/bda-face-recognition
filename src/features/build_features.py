@@ -29,6 +29,7 @@ def extract_n_concat(img):
 def load_images(path):
   files = os.listdir(path)
   images = []
+  labels = []
   for file in tqdm(files, desc="Loading: "):
     im = io.imread(os.path.join(path, file))
     im_arr = np.array(im)
@@ -36,6 +37,7 @@ def load_images(path):
     im_arr = rgb2gray(im_arr)
     img_contat = extract_n_concat(im_arr)
     images.append(img_contat)
-  return images
+    labels.append(int(file.split('_')[0]))
+  return np.array(images), np.array(labels)
 
-images = load_images(testing)
+images, labels = load_images(testing)
