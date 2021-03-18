@@ -12,32 +12,40 @@ test_data = '/content/drive/MyDrive/research/converted/test_data'
 train_data = '/content/drive/MyDrive/research/converted/train_data'
 testing = '/content/drive/MyDrive/research/converted/testing_data'
 
-def extract_n_concat(img):
-  # DWT extract
-  LL, (LH, HL, HH) = pywt.dwt2(img, 'bior1.3')
-  # DCT extract
-  imf = np.float32(img)
-  dst = cv2.dct(imf)
-  img = np.uint8(dst)
 
-  # Concat
-  a = np.concatenate([LL,LH], axis=0)
-  b = np.concatenate([HL,img[:59, :59]/255.0], axis=0)
-  c = np.concatenate([a, b], axis=1)
-  return c
+def extract_n_concat(img):
+    # DWT extract
+    LL, (LH, HL, HH) = pywt.dwt2(img, 'bior1.3')
+    # DCT extract
+    imf = np.float32(img)
+    dst = cv2.dct(imf)
+    img = np.uint8(dst)
+
+    # Concat
+    a = np.concatenate([LL, LH], axis=0)
+    b = np.concatenate([HL, img[:59, :59]/255.0], axis=0)
+    c = np.concatenate([a, b], axis=1)
+    return c
+
 
 def load_images(path):
-  files = os.listdir(path)
-  images = []
-  labels = []
-  for file in tqdm(files, desc="Loading: "):
-    im = io.imread(os.path.join(path, file))
-    im_arr = np.array(im)
-    im_arr = im_arr[:114, :114]
-    im_arr = rgb2gray(im_arr)
-    img_contat = extract_n_concat(im_arr)
-    images.append(img_contat)
-    labels.append(int(file.split('_')[0]))
-  return np.array(images), np.array(labels)
+  """
+  Loads images, extracts features
+  flattens matrix to vector
+  extracts labels
+  """
+    files = os.listdir(path)
+    images = []
+    labels = []
+    for file in tqdm(files, desc="Loading: "):
+        im = io.imread(os.path.join(path, file))
+        im_arr = np.array(im)
+        im_arr = im_arr[:114, :114]
+        im_arr = rgb2gray(im_arr)
+        img_contat = extract_n_concat(im_arr)
+        images.append(img_contat.flatten())
+        labels.append(int(file.split('_')[0]))
+    return np.array(images), np.array(labels)
+
 
 images, labels = load_images(testing)
