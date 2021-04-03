@@ -56,6 +56,10 @@ title('BDA'); grid on;
 % fprintf(' Specificity: %g %%',specificity);
 % fprintf(' Sensitivity: %g %%',sensitivity);
 
+https://github.com/JiaqiHe/Detection_of_Surge_Arrestor/blob/db49017b67bc5a4acc533955fcabbbc4e8a7ac5d/Auto_Encoder/train_and_test.m
+
+https://github.com/harrysimply/pulse_recognition/blob/f5c070e000b6a582398f82a12c439e2dafede565/divide_train_test_data.m
+
 ## Requirement
 * MATLAB 2014 or above
 * Statistics and Machine Learning Toolbox
