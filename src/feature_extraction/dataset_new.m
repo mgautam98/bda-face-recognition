@@ -6,8 +6,8 @@ dataset5 = dataset4(:, 1:size(dataset4, 2) - 1);
 dataset6 = SURF;
 dataset7 = dataset6(:, 1:size(dataset6, 2) - 1);
 % dataset = [dataset2, dataset5, dataset7, dataset3];
-label = dataset6(:, size(dataset6, 2));
-dataset = [dataset5, dataset7];
+
+dataset = [dataset5, dataset6];
 
 rand_sequence = randperm(size(dataset, 1)); %find possible combination fom 1 to no of rows
 temp_dataset = dataset; %  assign data set to temp
@@ -26,7 +26,8 @@ end
 
 filename = 'features.mat';
 % xlswrite(filename, dataset, 'Sheet1');
-feat = dataset;
+label = dataset(:, size(dataset, 2));
+feat = dataset(:, 1:size(dataset, 2)-1);
 
 size(feat)
 size(label)
