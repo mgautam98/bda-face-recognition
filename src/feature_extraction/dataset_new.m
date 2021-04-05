@@ -6,7 +6,8 @@ dataset5 = dataset4(:, 1:size(dataset4, 2) - 1);
 dataset6 = SURF;
 dataset7 = dataset6(:, 1:size(dataset6, 2) - 1);
 % dataset = [dataset2, dataset5, dataset7, dataset3];
-dataset = [dataset5, dataset6];
+label = dataset6(:, size(dataset6, 2));
+dataset = [dataset5, dataset7];
 
 rand_sequence = randperm(size(dataset, 1)); %find possible combination fom 1 to no of rows
 temp_dataset = dataset; %  assign data set to temp
@@ -23,5 +24,11 @@ for i = 1:size(dataset, 2) - 1 % from 1 to (number of column-1)[normalize the in
 
 end
 
-filename = 'tempfile.xlsx';
-xlswrite(filename, dataset, 'Sheet1');
+filename = 'features.mat';
+% xlswrite(filename, dataset, 'Sheet1');
+feat = dataset;
+
+size(feat)
+size(label)
+
+save(filename, 'feat', 'label');

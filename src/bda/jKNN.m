@@ -8,11 +8,11 @@ function Acc = jKNN(sFeat, label, HO)
 
     KNN = fitcknn(xtrain, ytrain, 'NumNeighbors', k);
     pred = predict(KNN, xvalid);
-    Acc = jAccuracy(pred, yvalid);
+    % Acc = jAccuracy(pred, yvalid);
 
     [C2, ~] = confusionmat(pred, yvalid);
 
-    acc_testing = (C2(1, 1) + C2(2, 2)) / (C2(1, 1) + C2(1, 2) + C2(2, 1) + C2(2, 2));
+    Acc = (C2(1, 1) + C2(2, 2)) / (C2(1, 1) + C2(1, 2) + C2(2, 1) + C2(2, 2));
     specificity = C2(2, 2) / (C2(2, 2) + C2(2, 1));
     sensitivity = C2(1, 1) / (C2(1, 1) + C2(1, 2));
 
