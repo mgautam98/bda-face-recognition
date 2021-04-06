@@ -1,13 +1,10 @@
-% dataset1 = FE;
-% dataset2 = dataset1(:, 1:size(dataset1, 2) - 1);
-% dataset3 = FE1;
-dataset4 = FE2;
-dataset5 = dataset4(:, 1:size(dataset4, 2) - 1);
-dataset6 = SURF;
-dataset7 = dataset6(:, 1:size(dataset6, 2) - 1);
-% dataset = [dataset2, dataset5, dataset7, dataset3];
+dataset1 = FE2;
+dataset2 = dataset1(:, 1:size(dataset1, 2) - 1);
+dataset3 = DCT;
+dataset4 = dataset3(:, 1:size(dataset3, 2) - 1);
+dataset5 = SURF;
 
-dataset = [dataset5, dataset6];
+dataset = [dataset2, dataset4, dataset5];
 
 rand_sequence = randperm(size(dataset, 1)); %find possible combination fom 1 to no of rows
 temp_dataset = dataset; %  assign data set to temp
