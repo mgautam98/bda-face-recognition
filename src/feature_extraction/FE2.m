@@ -9,7 +9,7 @@ function [features] = FE2
         features_t = [];
         
         for j = 1:length(srcFiles)
-            filename = strcat(base, srcFiles(i).name);
+            filename = strcat(base, srcFiles(j).name);
             img = imread(filename);
             img = rgb2gray(img);
             gaborArray = gaborFilterBank(5, 4, 39, 39);
