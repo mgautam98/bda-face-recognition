@@ -9,7 +9,7 @@ function [features] = SURF
         features_t = [];
 
         for j = 1:length(srcFiles)
-            filename = strcat(base, srcFiles(i).name);
+            filename = strcat(base, srcFiles(j).name);
             I = imread(filename);
             I = rgb2gray(I);
             points = detectSURFFeatures(I);
